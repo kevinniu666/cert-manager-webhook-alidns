@@ -1,0 +1,20 @@
+
+
+# First, Denylist ignore everything
+*
+*/**
+
+# Allowlist the file or folder
+# !NotIgnoredFile
+# !NotIgnoredFolder/
+
+# Recursively allowlist its contents
+# !NotIgnoredFolder/**
+
+!.gitignore
+!.gitmodules
+!LICENSE
+!README.md
+!values.yaml
+
+!cert-manager-webhook-alidns/**
