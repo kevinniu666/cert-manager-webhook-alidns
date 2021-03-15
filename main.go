@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/alidns"
-	certmanager_v1alpha1 "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1alpha1"
+	certmanager_v1 "github.com/jetstack/cert-manager/pkg/apis/meta/v1"
 	"github.com/jetstack/cert-manager/pkg/issuer/acme/dns/util"
 	extapi "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -62,7 +62,7 @@ type aliyunDNSProviderConfig struct {
 	RegionId           string                                 `json:"regionId"`
 	AccessKeyId        string                                 `json:"accessKeyId"`
 	AccessKeySecret    string                                 `json:"accessKeySecret"`
-	AccessKeySecretRef certmanager_v1alpha1.SecretKeySelector `json:"accessKeySecretRef"`
+	AccessKeySecretRef certmanager_v1.SecretKeySelector `json:"accessKeySecretRef"`
 	TTL                *int                                   `json:"ttl"`
 }
 
@@ -206,7 +206,7 @@ func (c *aliyunDNSProviderSolver) getDnsClient(ch *v1alpha1.ChallengeRequest, cf
 		if ref.Name == "" {
 			return nil, fmt.Errorf("no accessKeySecret for %q in secret '%s/%s'", ref.Name, ref.Key, ch.ResourceNamespace)
 		}
-		secret, err := c.client.CoreV1().Secrets(ch.ResourceNamespace).Get(ref.Name, metav1.GetOptions{})
+		secret, err := c.client.CoreV1().Secrets(ch.ResourceNamespace).Get(nil, ref.Name, metav1.GetOptions{})
 		if err != nil {
 			return nil, err
 		}
